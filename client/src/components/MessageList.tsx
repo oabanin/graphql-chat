@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-function MessageList({ user, messages }) {
-  const containerRef = useRef();
-
+function MessageList({ user, messages }: { user: any; messages: any }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
@@ -12,10 +11,14 @@ function MessageList({ user, messages }) {
   }, [messages]);
 
   return (
-    <div ref={containerRef} className="box" style={{ height: '50vh', overflowY: 'scroll' }}>
+    <div
+      ref={containerRef}
+      className="box"
+      style={{ height: "50vh", overflowY: "scroll" }}
+    >
       <table>
         <tbody>
-          {messages.map((message) => (
+          {messages.map((message: any) => (
             <MessageRow key={message.id} user={user} message={message} />
           ))}
         </tbody>
@@ -24,17 +27,15 @@ function MessageList({ user, messages }) {
   );
 }
 
-function MessageRow({ user, message }) {
+function MessageRow({ user, message }: { user: any; message: any }) {
   return (
     <tr>
       <td className="py-1">
-        <span className={(message.from === user.id) ? 'tag is-primary' : 'tag'}>
+        <span className={message.from === user.id ? "tag is-primary" : "tag"}>
           {message.from}
         </span>
       </td>
-      <td className="pl-4 py-1">
-        {message.text}
-      </td>
+      <td className="pl-4 py-1">{message.text}</td>
     </tr>
   );
 }

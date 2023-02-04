@@ -1,10 +1,8 @@
-function NavBar({ user, onLogout }) {
+function NavBar({ user, onLogout }: { user: any; onLogout: any }) {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <p className="navbar-item has-text-weight-bold">
-          GraphQL Chat
-        </p>
+        <p className="navbar-item has-text-weight-bold">GraphQL Chat</p>
       </div>
       <div className="navbar-end">
         {Boolean(user) && (

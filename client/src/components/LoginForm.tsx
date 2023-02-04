@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { login } from '../auth';
+import { useState } from "react";
+import { login } from "../auth";
 
-function LoginForm({ onLogin }) {
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
+function LoginForm({ onLogin }: { onLogin: any }) {
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     setError(false);
     const user = await login(userId, password);
@@ -20,35 +20,35 @@ function LoginForm({ onLogin }) {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="title">
-          Login
-        </h1>
+        <h1 className="title">Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="field">
-            <label className="label">
-              User ID
-            </label>
+            <label className="label">User ID</label>
             <div className="control">
-              <input className="input" type="text" required
-                value={userId} onChange={(event) => setUserId(event.target.value)}
+              <input
+                className="input"
+                type="text"
+                required
+                value={userId}
+                onChange={(event) => setUserId(event.target.value)}
               />
             </div>
           </div>
           <div className="field">
-            <label className="label">
-              Password
-            </label>
+            <label className="label">Password</label>
             <div className="control">
-              <input className="input" type="password" required
-                value={password} onChange={(event) => setPassword(event.target.value)}
+              <input
+                className="input"
+                type="password"
+                required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
           </div>
           {error && (
             <div className="message is-danger">
-              <p className="message-body">
-                Login failed
-              </p>
+              <p className="message-body">Login failed</p>
             </div>
           )}
           <div className="field">
