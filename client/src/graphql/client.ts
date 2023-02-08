@@ -1,28 +1,38 @@
-import {ApolloClient, HttpLink, InMemoryCache, split} from '@apollo/client';
-import {GraphQLWsLink} from '@apollo/client/link/subscriptions';
-import {getMainDefinition} from '@apollo/client/utilities';
-import {Kind, OperationTypeNode} from 'graphql';
-import {createClient as createWsClient} from 'graphql-ws';
-import {getAccessToken} from "../auth";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  Operation,
+  split,
+} from "@apollo/client";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { Kind, OperationTypeNode } from "graphql";
+import { createClient as createWsClient } from "graphql-ws";
+import { getAccessToken } from "../auth";
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:9000/graphql',
+  uri: "http://localhost:9000/graphql",
 });
 
-const wsLink = new GraphQLWsLink(createWsClient({
-    url: 'ws://localhost:9000/graphql',
-    connectionParams: () => ({accessToken: getAccessToken()}),
-}));
+const wsLink = new GraphQLWsLink(
+  createWsClient({
+    url: "ws://localhost:9000/graphql",
+    connectionParams: () => ({ accessToken: getAccessToken() }),
+  })
+);
 
-function isSubscription({query}: { query: any }) {
-    const definition = getMainDefinition(query);
-    return definition.kind === Kind.OPERATION_DEFINITION
-        && definition.operation === OperationTypeNode.SUBSCRIPTION;
+function isSubscription({ query }: { query: Operation["query"] }) {
+  const definition = getMainDefinition(query);
+  return (
+    definition.kind === Kind.OPERATION_DEFINITION &&
+    definition.operation === OperationTypeNode.SUBSCRIPTION
+  );
 }
 
 export const client = new ApolloClient({
-    link: split(isSubscription, wsLink, httpLink),
-    cache: new InMemoryCache(),
+  link: split(isSubscription, wsLink, httpLink),
+  cache: new InMemoryCache(),
 });
 
 export default client;
